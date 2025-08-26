@@ -327,7 +327,7 @@
     <div class="overlay" id="overlay"></div>
     
     <div class="easter-egg-content" id="easterEggContent">
-        <img src="https://youke1.picui.cn/s1/2025/08/27/68addcf1e2a51.jpg" alt="麻雀王国">
+        <img src="https://free.picui.cn/free/2025/08/27/68ade3e9d4750.jpg" alt="麻雀王国">
     </div>
 
     <script>
@@ -400,31 +400,6 @@
                     clearTimeout(easterEggTimer);
                 }
             });
-        });
-    </script>
-</body>
-</html>            displayedImage.src = imageUrl;
-            
-            let isImageVisible = false;
-            
-            toggleImageBtn.addEventListener('click', function() {
-                if (!isImageVisible) {
-                    // 显示图片
-                    imageContainer.style.display = 'block';
-                    isImageVisible = true;
-                    toggleImageBtn.textContent = '隐藏图片';
-                } else {
-                    // 隐藏图片
-                    imageContainer.style.display = 'none';
-                    isImageVisible = false;
-                    toggleImageBtn.textContent = '点我';
-                }
-            });
-            
-            // 添加加载错误处理
-            displayedImage.onerror = function() {
-                imageContainer.innerHTML = '<p style="color: red; font-weight: bold;">图片加载失败，请检查网络连接</p>';
-            };
         });
     </script>
 </body>
