@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button-container {
+            margin: 20px 0;
+        }
+        
+        #toggleImageBtn {
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+        }
+        
+        #toggleImageBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 117, 252, 0.6);
+        }
+        
+        #toggleImageBtn:active {
+            transform: translateY(1px);
+        }
+        
+        .image-container {
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        #displayedImage {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 5px solid white;
+        }
+        
+        .instruction {
+            color: #666;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            #toggleImageBtn {
+                padding: 15px 30px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="button-container">
+            <button id="toggleImageBtn">点我</button>
+        </div>
+        
+        <div class="image-container" id="imageContainer">
+            <img id="displayedImage" src="" alt="展示的图片">
+        </div>
+        
+        <p class="instruction">点击按钮显示或隐藏图片</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleImageBtn = document.getElementById('toggleImageBtn');
+            const imageContainer = document.getElementById('imageContainer');
+            const displayedImage = document.getElementById('displayedImage');
+            
+            // 图片URL
+            const imageUrl = 'https://youke1.picui.cn/s1/2025/08/26/68adabe1aa659.png';
+            
+            // 预加载图片
+            displayedImage.src = imageUrl;
+            
+            let isImageVisible = false;
+            
+            toggleImageBtn.addEventListener('click', function() {
+                if (!isImageVisible) {
+                    // 显示图片
+                    imageContainer.style.display = 'block';
+                    isImageVisible = true;
+                    toggleImageBtn.textContent = '隐藏图片';
+                } else {
+                    // 隐藏图片
+                    imageContainer.style.display = 'none';
+                    isImageVisible = false;
+                    toggleImageBtn.textContent = '点我';
+                }
+            });
+            
+            // 添加加载错误处理
+            displayedImage.onerror = function() {
+                imageContainer.innerHTML = '<p style="color: red; font-weight: bold;">图片加载失败，请检查网络连接</p>';
+            };
+        });
+    </script>
+</body>
+</html>
