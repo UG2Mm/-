@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片展示</title>
+    <title>一个网页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,69 +13,209 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
+        }
+        
+        .header {
             text-align: center;
-        }
-        
-        .container {
+            margin-bottom: 40px;
             max-width: 800px;
-            width: 100%;
-            padding: 30px;
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .button-container {
-            margin: 20px 0;
+        .title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b, #ff416c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
+            line-height: 1.3;
         }
         
-        #toggleImageBtn {
-            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        
+        .main-image {
+            width: 85%;
+            max-width: 900px;
+            height: 55vh;
+            background-image: url('https://youke1.picui.cn/s1/2025/08/27/68addc4448c89.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+        }
+        
+        .toggle-button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .toggle-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
             color: white;
             border: none;
-            padding: 18px 40px;
-            font-size: 20px;
+            padding: 18px 32px;
+            font-size: 1.3rem;
             font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.5);
+            width: 180px;
+            position: relative;
+            overflow: hidden;
+            z-index: 5;
         }
         
-        #toggleImageBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 117, 252, 0.6);
+        .toggle-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
         }
         
-        #toggleImageBtn:active {
-            transform: translateY(1px);
+        .toggle-button:hover:before {
+            left: 100%;
         }
         
-        .image-container {
-            margin-top: 30px;
+        .toggle-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 75, 43, 0.7);
+        }
+        
+        .toggle-button:active {
+            transform: translateY(2px);
+        }
+        
+        .toggle-content {
             display: none;
-            animation: fadeIn 0.8s ease;
+            animation: popInFromTop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            width: 380px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 4;
+            position: absolute;
+            bottom: 80px;
         }
         
-        #displayedImage {
-            max-width: 100%;
+        .toggle-content img {
+            width: 100%;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            border: 5px solid white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
         }
         
-        .instruction {
-            color: #666;
-            margin-top: 20px;
-            font-size: 16px;
+        .toggle-content img:hover {
+            transform: scale(1.03);
+        }
+        
+        @keyframes popInFromTop {
+            0% { 
+                opacity: 0; 
+                transform: translateY(-30px) scale(0.8); 
+            }
+            50% {
+                transform: translateY(10px) scale(1.05);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .hint {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+            text-align: center;
+            max-width: 90%;
+            display: block;
+        }
+        
+        .easter-egg {
+            margin-top: 60px;
+            text-align: center;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .easter-egg:hover {
+            opacity: 0.6;
+        }
+        
+        .easter-egg-content {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .easter-egg-content img {
+            max-width: 80vw;
+            max-height: 80vh;
+            border-radius: 10px;
+            transform: scale(1.2); /* 放大五分之一 */
         }
         
         @keyframes fadeIn {
@@ -82,42 +223,187 @@
             to { opacity: 1; }
         }
         
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 99;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                margin-bottom: 30px;
             }
             
-            #toggleImageBtn {
-                padding: 15px 30px;
-                font-size: 18px;
+            .title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .main-image {
+                width: 95%;
+                height: 45vh;
+            }
+            
+            .toggle-button {
+                padding: 16px 28px;
+                font-size: 1.1rem;
+                width: 160px;
+            }
+            
+            .toggle-content {
+                width: 320px;
+            }
+            
+            .hint {
+                font-size: 1rem;
+                padding: 12px 24px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .main-image {
+                height: 35vh;
+            }
+            
+            .toggle-content {
+                width: 280px;
+            }
+            
+            .toggle-button {
+                width: 150px;
+                padding: 14px 24px;
+            }
+            
+            .hint {
+                font-size: 0.9rem;
+                padding: 10px 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="button-container">
-            <button id="toggleImageBtn">点我</button>
+    <div class="header">
+        <h1 class="title">这是一个网页</h1>
+        <p class="subtitle">你知道的，网页他就是网页，没有什么特别的</p>
+    </div>
+    
+    <div class="main-image"></div>
+    
+    <div class="hint" id="hint">
+        <i class="fas fa-hand-point-down"></i> 点击下方的"点我"按钮查看隐藏图片
+    </div>
+    
+    <div class="toggle-button-container">
+        <div class="toggle-content" id="toggleContent">
+            <img src="https://youke1.picui.cn/s1/2025/08/27/68addb9daf000.png" alt="隐藏的图片">
         </div>
         
-        <div class="image-container" id="imageContainer">
-            <img id="displayedImage" src="" alt="展示的图片">
-        </div>
-        
-        <p class="instruction">点击按钮显示或隐藏图片</p>
+        <button class="toggle-button" id="toggleBtn">
+            <span>点我</span>
+        </button>
+    </div>
+    
+    <div class="easter-egg" id="easterEgg">
+        麻雀王国
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="easter-egg-content" id="easterEggContent">
+        <img src="https://youke1.picui.cn/s1/2025/08/27/68addcf1e2a51.jpg" alt="麻雀王国">
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const toggleImageBtn = document.getElementById('toggleImageBtn');
-            const imageContainer = document.getElementById('imageContainer');
-            const displayedImage = document.getElementById('displayedImage');
+            const toggleBtn = document.getElementById('toggleBtn');
+            const toggleContent = document.getElementById('toggleContent');
+            const hint = document.getElementById('hint');
+            const easterEgg = document.getElementById('easterEgg');
+            const easterEggContent = document.getElementById('easterEggContent');
+            const overlay = document.getElementById('overlay');
             
-            // 图片URL
-            const imageUrl = 'https://youke1.picui.cn/s1/2025/08/26/68adabe1aa659.png';
+            let isContentVisible = false;
+            let easterEggTimer = null;
             
-            // 预加载图片
-            displayedImage.src = imageUrl;
+            // 按钮点击事件
+            toggleBtn.addEventListener('click', function() {
+                if (!isContentVisible) {
+                    // 显示内容
+                    toggleContent.style.display = 'block';
+                    isContentVisible = true;
+                    toggleBtn.innerHTML = '<span>收起</span>';
+                } else {
+                    // 隐藏内容
+                    toggleContent.style.display = 'none';
+                    isContentVisible = false;
+                    toggleBtn.innerHTML = '<span>点我</span>';
+                }
+            });
+            
+            // 点击图片外区域关闭弹出图片
+            document.addEventListener('click', function(event) {
+                if (isContentVisible && 
+                    !toggleContent.contains(event.target) && 
+                    !toggleBtn.contains(event.target)) {
+                    toggleContent.style.display = 'none';
+                    isContentVisible = false;
+                    toggleBtn.innerHTML = '<span>点我</span>';
+                }
+            });
+            
+            // 阻止点击弹出图片时触发外部点击事件
+            toggleContent.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+            
+            // 彩蛋点击事件
+            easterEgg.addEventListener('click', function() {
+                easterEggContent.style.display = 'block';
+                overlay.style.display = 'block';
+                
+                // 清除之前的计时器
+                if (easterEggTimer) {
+                    clearTimeout(easterEggTimer);
+                }
+                
+                // 设置10秒后隐藏
+                easterEggTimer = setTimeout(function() {
+                    easterEggContent.style.display = 'none';
+                    overlay.style.display = 'none';
+                }, 10000);
+            });
+            
+            // 点击遮罩层关闭彩蛋
+            overlay.addEventListener('click', function() {
+                easterEggContent.style.display = 'none';
+                overlay.style.display = 'none';
+                
+                // 清除计时器
+                if (easterEggTimer) {
+                    clearTimeout(easterEggTimer);
+                }
+            });
+        });
+    </script>
+</body>
+</html>            displayedImage.src = imageUrl;
             
             let isImageVisible = false;
             
