@@ -4,420 +4,1027 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一个网页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #4776E6;
-            --danger: #E53935;
-            --warning: #FF9800;
-            --success: #4CAF50;
-            --text: #333;
-            --bg: #f8f9fa;
-            --white: #fff;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* 前台样式 */
+        .frontend {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
             min-height: 100vh;
         }
-
-        header {
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--white);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .time {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: var(--white);
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: var(--white);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: var(--white);
-        }
-
-        .container {
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
             max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
         }
-
-        .btn-container {
+        
+        .title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b, #ff416c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
+            line-height: 1.3;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        
+        .main-image {
+            width: 85%;
+            max-width: 900px;
+            height: 55vh;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+        }
+        
+        .toggle-button-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .toggle-button {
+            display: flex;
+            align-items: center;
             justify-content: center;
-        }
-
-        .btn-main {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
-            color: var(--white);
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
             border: none;
-            border-radius: 4px;
+            padding: 18px 32px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 50px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.5);
+            width: 180px;
+            position: relative;
+            overflow: hidden;
+            z-index: 5;
         }
-
-        .contact-btn {
+        
+        .toggle-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .toggle-button:hover:before {
+            left: 100%;
+        }
+        
+        .toggle-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 75, 43, 0.7);
+        }
+        
+        .toggle-button:active {
+            transform: translateY(2px);
+        }
+        
+        .toggle-content {
+            display: none;
+            animation: popInFromTop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            width: 380px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 4;
+            position: absolute;
+            bottom: 80px;
+        }
+        
+        .toggle-content img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px极25px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-content img:hover {
+            transform: scale(1.03);
+        }
+        
+        .hint {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+            text-align: center;
+            max-width: 90%;
+            display: block;
+        }
+        
+        .easter-egg {
+            margin-top: 60px;
+            text-align: center;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .easter-egg:hover {
+            opacity: 0.6;
+        }
+        
+        .admin-btn {
             position: fixed;
-            left: 1rem;
-            bottom: 1rem;
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: 4px;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
             cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
-
-        .modal {
+        
+        .admin-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 后台样式 */
+        .backend {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+            background: #0f172a;
+        }
+        
+        .admin-panel {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .admin-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .admin-controls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .control-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .control-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #4facfe;
+        }
+        
+        .login-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .login-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #4facfe;
+            text-align: center;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        
+        .url-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        
+        .text-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        
+        .login-btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .url-btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .text-btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .login-btn:hover, .url-btn:hover, .text-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .switch-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .switch-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .switch-btn.active {
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.7);
+        }
+        
+        .open-btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+        }
+        
+        .close-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 关闭状态样式 */
+        .closed-state {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            align-items: center;
+            background: #0f172a;
+            z-index: 2000;
+            flex-direction: column;
             justify-content: center;
-            z-index: 100;
-        }
-
-        .modal-content {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 4px;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            margin: 0.5rem 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .btn-list {
-            max-height: 300px;
-            overflow-y: auto;
-            margin: 1rem 0;
-        }
-
-        .btn-item {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 0.5rem;
-            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .time-display {
+            font-size: 6rem;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(79, 172, 254, 0.7);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .date-display {
+            font-size: 2rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        
+        .lunar-display {
+            font-size: 1.8rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .festival-display {
+            font-size: 1.8rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            color: #ff6b6b;
+        }
+        
+        .countdown-display {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+            color: #4facfe;
+        }
+        
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .error {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+        }
+        
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.3s ease;
+        }
+        
+        .toggle-password:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        @keyframes popInFromTop {
+            0% { 
+                opacity: 0; 
+                transform: translateY(-30px) scale(0.8); 
+            }
+            50% {
+                transform: translateY(10px) scale(1.05);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .admin-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .time-display {
+                font-size: 4rem;
+            }
+            
+            .date-display, .lunar-display, .festival-display {
+                font-size: 1.5rem;
+            }
+            
+            .countdown-display {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div id="beijingTime" class="time"></div>
-        <div class="auth-buttons">
-            <button id="addBtn" class="btn btn-warning" style="display: none;">添加</button>
-            <button id="deleteBtn" class="btn btn-danger" style="display: none;">删除</button>
-            <button id="authBtn" class="btn btn-success">登录</button>
+    <!-- 前台内容 -->
+    <div class="frontend" id="frontend">
+        <button class="admin-btn" id="adminLoginBtn">登录后台</button>
+        
+        <div class="header">
+            <h1 class="title" id="pageTitle">一个网页</h1>
+            <p class="subtitle" id="pageSubtitle">你知道的，网页他就是网页，没有什么特别的</p>
         </div>
-    </header>
-
-    <div class="container">
-        <div class="btn-container" id="buttonContainer">
-            <button class="btn-main" data-url="https://www.baidu.com">百度</button>
-            <button class="btn-main" data-url="https://www.google.com">谷歌</button>
+        
+        <div class="main-image" id="mainImage"></div>
+        
+        <div class="hint" id="hint">
+            <i class="fas fa-hand-point-down"></i> 点击下方的"点我"按钮查看隐藏图片
+        </div>
+        
+        <div class="toggle-button-container">
+            <div class="toggle-content" id="toggleContent">
+                <img src="" alt="隐藏的图片" id="popupImage">
+            </div>
+            
+            <button class="toggle-button" id="toggleBtn">
+                <span>点我</span>
+            </button>
+        </div>
+        
+        <div class="easter-egg" id="easterEgg">
+            麻雀王国
         </div>
     </div>
 
-    <button id="contactBtn" class="contact-btn">联系我</button>
-
-    <!-- 图片模态框 -->
-    <div id="imageModal" class="modal">
-        <div class="modal-content">
-            <img id="contactImage" src="https://free.picui.cn/free/2025/08/27/68ade70ba3776.png" style="max-width: 100%;">
-        </div>
-    </div>
-
-    <!-- 登录模态框 -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <h2>用户登录</h2>
-            <input type="password" id="password" class="form-input" placeholder="请输入密码">
-            <div class="modal-actions">
-                <button id="submitBtn" class="btn btn-primary">登 录</button>
+    <!-- 后台管理 -->
+    <div class="backend" id="backend">
+        <div class="admin-panel">
+            <div class="admin-header">
+                <h2 class="admin-title">网页后台管理系统</h2>
+                <p>在这里管理您的网页内容和状态</p>
+            </div>
+            
+            <div class="login-form" id="loginForm">
+                <h3 class="login-title">管理员登录</h3>
+                <div class="form-group">
+                    <input type="text" class="login-input" id="usernameInput" placeholder="账号">
+                </div>
+                <div class="form-group">
+                    <div class="password-container">
+                        <input type="password" class="login-input" id="passwordInput" placeholder="密码">
+                        <span class="toggle-password" id="togglePassword">
+                            <i class="far fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+                <button class="login-btn" id="loginBtn">登录</button>
+                <div class="message error" id="errorMessage">账号或密码错误，请重新输入</div>
+                <div class="message success" id="successMessage">登录成功！</div>
+            </div>
+            
+            <div id="adminControls" style="display: none;">
+                <div class="admin-controls">
+                    <div class="control-card">
+                        <h3 class="control-title">网页控制</h3>
+                        <div class="switch-buttons">
+                            <button class="switch-btn open-btn" id="openBtn">开启网页</button>
+                            <button class="switch-btn close-btn active" id="closeBtn">关闭网页</button>
+                        </div>
+                        <p id="websiteStatus">当前状态: 开启</p>
+                    </div>
+                    
+                    <div class="control-card">
+                        <h3 class="control-title">图片管理</h3>
+                        <input type="text" class="url-input" id="mainImageInput" placeholder="主图片URL">
+                        <button class="url-btn" id="updateMainImageBtn">更新主图片</button>
+                        
+                        <input type="text" class="url-input" id="popupImageInput" placeholder="弹出图片URL">
+                        <button class="url-btn" id="updatePopupImageBtn">更新弹出图片</button>
+                    </div>
+                    
+                    <div class="control-card">
+                        <h3 class="control-title">文本内容管理</h3>
+                        <input type="text" class="text-input" id="pageTitleInput" placeholder="网页标题">
+                        <button class="text-btn" id="updateTitleBtn">更新网页标题</button>
+                        
+                        <input type="text" class="text-input" id="pageSubtitleInput" placeholder="网页副标题">
+                        <button class="text-btn" id="updateSubtitleBtn">更新网页副标题</button>
+                        
+                        <input type="text" class="text-input" id="easterEggInput" placeholder="彩蛋文字">
+                        <button class="text-btn" id="updateEasterEggBtn">更新彩蛋文字</button>
+                    </div>
+                </div>
+                
+                <button class="back-btn" id="backToFrontendBtn">返回前台</button>
             </div>
         </div>
     </div>
 
-    <!-- 添加按钮模态框 -->
-    <div id="addModal" class="modal">
-        <div class="modal-content">
-            <h2>添加新按钮</h2>
-            <input type="text" id="btnName" class="form-input" placeholder="按钮名称">
-            <input type="text" id="btnUrl" class="form-input" placeholder="跳转链接">
-            <div class="modal-actions">
-                <button id="addSubmitBtn" class="btn btn-primary">添 加</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 删除按钮模态框 -->
-    <div id="deleteModal" class="modal">
-        <div class="modal-content">
-            <h2>选择要删除的按钮</h2>
-            <div class="btn-list" id="btnList"></div>
-            <div class="modal-actions">
-                <button id="closeDeleteModal" class="btn">关 闭</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 确认删除模态框 -->
-    <div id="confirmModal" class="modal">
-        <div class="modal-content">
-            <h2>确认删除</h2>
-            <p id="confirmMessage">确定要删除这个按钮吗？</p>
-            <div class="modal-actions">
-                <button id="confirmDelete" class="btn btn-danger">确认删除</button>
-                <button id="cancelDelete" class="btn">取 消</button>
-            </div>
-        </div>
+    <!-- 关闭状态显示 -->
+    <div class="closed-state" id="closedState">
+        <div class="time-display" id="currentTime">00:00:00</div>
+        <div class="date-display" id="currentDate">0000年00月00日 星期X</div>
+        <div class="lunar-display" id="lunarDate">农历X月X日</div>
+        <div class="festival-display" id="festivalInfo">今日节日/节气信息</div>
+        <div class="countdown-display" id="countdownInfo">距离下一个节日: X天</div>
+        <button class="admin-btn" id="adminBtnFromClosed">登录后台</button>
     </div>
 
     <script>
-        // 获取DOM元素
-        const authBtn = document.getElementById('authBtn');
-        const addBtn = document.getElementById('addBtn');
-        const deleteBtn = document.getElementById('deleteBtn');
-        const buttonContainer = document.getElementById('buttonContainer');
-        const contactBtn = document.getElementById('contactBtn');
-        const imageModal = document.getElementById('imageModal');
-        const loginModal = document.getElementById('loginModal');
-        const addModal = document.getElementById('addModal');
-        const deleteModal = document.getElementById('deleteModal');
-        const confirmModal = document.getElementById('confirmModal');
-        const submitBtn = document.getElementById('submitBtn');
-        const addSubmitBtn = document.getElementById('addSubmitBtn');
-        const closeDeleteModal = document.getElementById('closeDeleteModal');
-        const confirmDelete = document.getElementById('confirmDelete');
-        const cancelDelete = document.getElementById('cancelDelete');
-        const passwordInput = document.getElementById('password');
-        const btnNameInput = document.getElementById('btnName');
-        const btnUrlInput = document.getElementById('btnUrl');
-        const contactImage = document.getElementById('contactImage');
-        const beijingTime = document.getElementById('beijingTime');
-        const btnList = document.getElementById('btnList');
-        const confirmMessage = document.getElementById('confirmMessage');
-
-        // 状态变量
-        let isLoggedIn = false;
-        let selectedButton = null;
-
-        // 更新北京时间
-        function updateBeijingTime() {
-            const now = new Date();
-            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-            beijingTime.textContent = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 星期${weekdays[now.getDay()]} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-        }
-
-        // 更新UI状态
-        function updateUI() {
-            if (isLoggedIn) {
-                authBtn.textContent = '退出';
-                authBtn.className = 'btn btn-danger';
-                addBtn.style.display = 'flex';
-                deleteBtn.style.display = 'flex';
-            } else {
-                authBtn.textContent = '登录';
-                authBtn.className = 'btn btn-success';
-                addBtn.style.display = 'none';
-                deleteBtn.style.display = 'none';
-            }
-        }
-
-        // 登录/退出功能
-        authBtn.addEventListener('click', function() {
-            if (isLoggedIn) {
-                isLoggedIn = false;
-                updateUI();
-            } else {
-                loginModal.style.display = 'flex';
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        });
-
-        // 登录提交
-        submitBtn.addEventListener('click', function() {
-            if (passwordInput.value === '74107410') {
-                isLoggedIn = true;
-                updateUI();
-                loginModal.style.display = 'none';
-            } else if (passwordInput.value !== '') {
-                alert('密码错误');
-            }
-        });
-
-        // 添加按钮点击
-        addBtn.addEventListener('click', function() {
-            addModal.style.display = 'flex';
-            btnNameInput.value = '';
-            btnUrlInput.value = '';
-            btnNameInput.focus();
-        });
-
-        // 添加提交
-        addSubmitBtn.addEventListener('click', function() {
-            const name = btnNameInput.value.trim();
-            let url = btnUrlInput.value.trim();
+        document.addEventListener('DOMContentLoaded', function() {
+            // 元素引用
+            const frontend = document.getElementById('frontend');
+            const backend = document.getElementById('backend');
+            const closedState = document.getElementById('closedState');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            const adminBtnFromClosed = document.getElementById('adminBtnFromClosed');
+            const backToFrontendBtn = document.getElementById('backToFrontendBtn');
+            const toggleBtn = document.getElementById('toggleBtn');
+            const toggleContent = document.getElementById('toggleContent');
+            const mainImage = document.getElementById('mainImage');
+            const popupImage = document.getElementById('popupImage');
+            const pageTitle = document.getElementById('pageTitle');
+            const pageSubtitle = document.getElementById('pageSubtitle');
+            const easterEgg = document.getElementById('easterEgg');
+            const openBtn = document.getElementById('openBtn');
+            const closeBtn = document.getElementById('closeBtn');
+            const websiteStatus = document.getElementById('websiteStatus');
+            const currentTime = document.getElementById('currentTime');
+            const currentDate = document.getElementById('currentDate');
+            const lunarDate = document.getElementById('lunarDate');
+            const festivalInfo = document.getElementById('festivalInfo');
+            const countdownInfo = document.getElementById('countdownInfo');
+            const loginForm = document.getElementById('loginForm');
+            const adminControls = document.getElementById('adminControls');
+            const usernameInput = document.getElementById('usernameInput');
+            const passwordInput = document.getElementById('passwordInput');
+            const loginBtn = document.getElementById('loginBtn');
+            const togglePassword = document.getElementById('togglePassword');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            const mainImageInput = document.getElementById('mainImageInput');
+            const popupImageInput = document.getElementById('popupImageInput');
+            const updateMainImageBtn = document.getElementById('updateMainImageBtn');
+            const updatePopupImageBtn = document.getElementById('updatePopupImageBtn');
+            const pageTitleInput = document.getElementById('pageTitleInput');
+            const pageSubtitleInput = document.getElementById('pageSubtitleInput');
+            const easterEggInput = document.getElementById('easterEggInput');
+            const updateTitleBtn = document.getElementById('updateTitleBtn');
+            const updateSubtitleBtn = document.getElementById('updateSubtitleBtn');
+            const updateEasterEggBtn = document.getElementById('updateEasterEggBtn');
             
-            if (name && url) {
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'http://' + url;
+            // 加密的账号密码 (使用简单的base64编码)
+            const encryptedUsername = 'NzQxMDc0MTA='; // 74107410
+            const encryptedPassword = 'MDg1MjA4NTI='; // 08520852
+            
+            // 初始化图片
+            let mainImageUrl = 'https://free.picui.cn/free/2025/08/27/68ade73579453.png';
+            let popupImageUrl = 'https://free.picui.cn/free/2025/08/27/68ade70ba3776.png';
+            
+            // 设置图片
+            mainImage.style.backgroundImage = `url('${mainImageUrl}')`;
+            popupImage.src = popupImageUrl;
+            
+            // 状态变量
+            let isContentVisible = false;
+            let isWebsiteOpen = true;
+            let isLoggedIn = false;
+            
+            // 农历日期数据（简化版）
+            const lunarMonths = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'];
+            const lunarDays = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十',
+                              '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
+                              '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十'];
+            
+            // 节日数据（简化版）
+            const festivals = [
+                { date: '01-01', name: '元旦', type: '节日' },
+                { date: '02-14', name: '春节', type: '节日' },
+                { date: '05-01', name: '劳动节', type: '节日' },
+                { date: '06-01', name: '儿童节', type: '节日' },
+                { date: '10-01', name: '国庆节', type: '节日' },
+                { date: '12-25', name: '圣诞节', type: '节日' },
+                { date: '02-04', name: '立春', type: '节气' },
+                { date: '03-05', name: '惊蛰', type: '节气' },
+                { date: '05-05', name: '立夏', type: '节气' },
+                { date: '06-21', name: '夏至', type: '节气' },
+                { date: '08-07', name: '立秋', type: '节气' },
+                { date: '09-23', name: '秋分', type: '节气' },
+                { date: '11-07', name: '立冬', type: '节气' },
+                { date: '12-21', name: '冬至', type: '节气' }
+            ];
+            
+            // 获取农历日期（简化版）
+            function getLunarDate() {
+                const now = new Date();
+                const month = now.getMonth();
+                const day = now.getDate();
+                
+                // 简单模拟农历日期
+                const lunarMonth = lunarMonths[month % 12];
+                const lunarDay = lunarDays[day % 30];
+                
+                return `农历${lunarMonth}月${lunarDay}`;
+            }
+            
+            // 获取节日信息
+            function getFestivalInfo() {
+                const now = new Date();
+                const todayStr = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                
+                // 查找今天的节日
+                const todayFestival = festivals.find(f => f.date === todayStr);
+                
+                if (todayFestival) {
+                    return `今日${todayFestival.type}: ${todayFestival.name}`;
                 }
                 
-                const newBtn = document.createElement('button');
-                newBtn.className = 'btn-main';
-                newBtn.textContent = name;
-                newBtn.setAttribute('data-url', url);
-                newBtn.addEventListener('click', function() {
-                    window.location.href = url;
-                });
+                // 如果没有节日，查找下一个节日
+                let nextFestival = null;
+                let minDiff = Infinity;
                 
-                buttonContainer.appendChild(newBtn);
-                addModal.style.display = 'none';
-            } else {
-                alert('请填写名称和链接');
+                for (const festival of festivals) {
+                    const [festMonth, festDay] = festival.date.split('-').map(Number);
+                    const festDate = new Date(now.getFullYear(), festMonth - 1, festDay);
+                    
+                    // 如果节日已经过去，计算下一年的
+                    if (festDate < now) {
+                        festDate.setFullYear(now.getFullYear() + 1);
+                    }
+                    
+                    const diffTime = festDate - now;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays < minDiff) {
+                        minDiff = diffDays;
+                        nextFestival = festival;
+                    }
+                }
+                
+                if (nextFestival) {
+                    return `距离${nextFestival.name}还有 ${minDiff} 天`;
+                }
+                
+                return "暂无节日信息";
             }
-        });
-
-        // 删除按钮点击
-        deleteBtn.addEventListener('click', function() {
-            // 清空按钮列表
-            btnList.innerHTML = '';
             
-            // 获取所有按钮并添加到列表
-            const buttons = buttonContainer.querySelectorAll('.btn-main');
-            buttons.forEach(btn => {
-                const btnItem = document.createElement('div');
-                btnItem.className = 'btn-item';
+            // 更新时间函数
+            function updateTime() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
                 
-                const btnName = document.createElement('span');
-                btnName.textContent = btn.textContent;
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
                 
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn btn-danger';
-                deleteBtn.textContent = '删除';
-                deleteBtn.addEventListener('click', function() {
-                    selectedButton = btn;
-                    confirmMessage.textContent = `确定要删除"${btn.textContent}"按钮吗？`;
-                    deleteModal.style.display = 'none';
-                    confirmModal.style.display = 'flex';
-                });
+                const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+                const weekday = weekdays[now.getDay()];
                 
-                btnItem.appendChild(btnName);
-                btnItem.appendChild(deleteBtn);
-                btnList.appendChild(btnItem);
+                currentTime.textContent = `${hours}:${minutes}:${seconds}`;
+                currentDate.textContent = `${year}年${month}月${day}日 星期${weekday}`;
+                lunarDate.textContent = getLunarDate();
+                
+                const festivalText = getFestivalInfo();
+                if (festivalText.includes("距离")) {
+                    countdownInfo.textContent = festivalText;
+                    festivalInfo.textContent = "今日无节日节气";
+                } else {
+                    festivalInfo.textContent = festivalText;
+                    countdownInfo.textContent = "";
+                }
+            }
+            
+            // 初始化时间
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // 按钮点击事件
+            toggleBtn.addEventListener('click', function() {
+                if (!isContentVisible) {
+                    toggleContent.style.display = 'block';
+                    isContentVisible = true;
+                    toggleBtn.innerHTML = '<span>收起</span>';
+                } else {
+                    toggleContent.style.display = 'none';
+                    isContentVisible = false;
+                    toggleBtn.innerHTML = '<span>点我</span>';
+                }
             });
             
-            // 显示删除模态框
-            deleteModal.style.display = 'flex';
-        });
-
-        // 确认删除
-        confirmDelete.addEventListener('click', function() {
-            if (selectedButton) {
-                selectedButton.remove();
-                selectedButton = null;
-            }
-            confirmModal.style.display = 'none';
-        });
-
-        // 取消删除
-        cancelDelete.addEventListener('click', function() {
-            selectedButton = null;
-            confirmModal.style.display = 'none';
-            deleteModal.style.display = 'flex';
-        });
-
-        // 关闭删除模态框
-        closeDeleteModal.addEventListener('click', function() {
-            deleteModal.style.display = 'none';
-        });
-
-        // 联系按钮点击
-        contactBtn.addEventListener('click', function() {
-            if (isLoggedIn) {
-                const newImageUrl = prompt('请输入新的图片URL:', contactImage.src);
-                if (newImageUrl) {
-                    contactImage.src = newImageUrl;
-                }
-            } else {
-                imageModal.style.display = 'flex';
-            }
-        });
-
-        // 点击模态框外部关闭
-        [loginModal, addModal, deleteModal, confirmModal, imageModal].forEach(modal => {
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                    selectedButton = null;
+            // 点击图片外区域关闭弹出图片
+            document.addEventListener('click', function(event) {
+                if (isContentVisible && 
+                    !toggleContent.contains(event.target) && 
+                    !toggleBtn.contains(event.target)) {
+                    toggleContent.style.display = 'none';
+                    isContentVisible = false;
+                    toggleBtn.innerHTML = '<span>点我</span>';
                 }
             });
+            
+            // 阻止点击弹出图片时触发外部点击事件
+            toggleContent.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+            
+            // 显示/隐藏密码
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePassword.innerHTML = '<i class="far fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    togglePassword.innerHTML = '<i class="far fa-eye"></i>';
+                }
+            });
+            
+            // 后台登录按钮
+            adminLoginBtn.addEventListener('click', function() {
+                frontend.style.display = 'none';
+                backend.style.display = 'block';
+                closedState.style.display = 'none';
+            });
+            
+            adminBtnFromClosed.addEventListener('click', function() {
+                closedState.style.display = 'none';
+                backend.style.display = 'block';
+                frontend.style.display = 'none';
+            });
+            
+            // 返回前台按钮
+            backToFrontendBtn.addEventListener('click', function() {
+                backend.style.display = 'none';
+                if (isWebsiteOpen) {
+                    frontend.style.display = 'flex';
+                } else {
+                    closedState.style.display = 'flex';
+                }
+            });
+            
+            // 登录验证
+            loginBtn.addEventListener('click', function() {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                // 解码加密的账号密码
+                const decodedUsername = atob(encryptedUsername);
+                const decodedPassword = atob(encryptedPassword);
+                
+                // 隐藏所有消息
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+                
+                if (username === decodedUsername && password === decodedPassword) {
+                    // 登录成功
+                    successMessage.style.display = 'block';
+                    isLoggedIn = true;
+                    loginForm.style.display = 'none';
+                    adminControls.style.display = 'block';
+                    
+                    // 填充当前值到输入框
+                    pageTitleInput.value = pageTitle.textContent;
+                    pageSubtitleInput.value = pageSubtitle.textContent;
+                    easterEggInput.value = easterEgg.textContent;
+                } else {
+                    // 登录失败
+                    errorMessage.style.display = 'block';
+                    
+                    // 清空密码框
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            });
+            
+            // 支持按Enter键登录
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+            
+            // 网页开关控制
+            openBtn.addEventListener('click', function() {
+                isWebsiteOpen = true;
+                websiteStatus.textContent = '当前状态: 开启';
+                frontend.style.display = 'flex';
+                closedState.style.display = 'none';
+                backend.style.display = 'none';
+                
+                openBtn.classList.add('active');
+                closeBtn.classList.remove('active');
+                
+                // 在实际应用中，这里应该发送请求到服务器更新状态
+                localStorage.setItem('websiteStatus', 'open');
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                isWebsiteOpen = false;
+                websiteStatus.textContent = '当前状态: 关闭';
+                frontend.style.display = 'none';
+                backend.style.display = 'none';
+                closedState.style.display = 'flex';
+                
+                closeBtn.classList.add('active');
+                openBtn.classList.remove('active');
+                
+                // 在实际应用中，这里应该发送请求到服务器更新状态
+                localStorage.setItem('websiteStatus', 'closed');
+            });
+            
+            // 更新图片
+            updateMainImageBtn.addEventListener('click', function() {
+                if (mainImageInput.value) {
+                    mainImageUrl = mainImageInput.value;
+                    mainImage.style.backgroundImage = `url('${mainImageUrl}')`;
+                    mainImageInput.value = '';
+                    alert('主图片已更新!');
+                    
+                    // 保存到本地存储
+                    localStorage.setItem('mainImageUrl', mainImageUrl);
+                }
+            });
+            
+            updatePopupImageBtn.addEventListener('click', function() {
+                if (popupImageInput.value) {
+                    popupImageUrl = popupImageInput.value;
+                    popupImage.src = popupImageUrl;
+                    popupImageInput.value = '';
+                    alert('弹出图片已更新!');
+                    
+                    // 保存到本地存储
+                    localStorage.setItem('popupImageUrl', popupImageUrl);
+                }
+            });
+            
+            // 更新文本内容
+            updateTitleBtn.addEventListener('click', function() {
+                if (pageTitleInput.value) {
+                    pageTitle.textContent = pageTitleInput.value;
+                    alert('网页标题已更新!');
+                    
+                    // 保存到本地存储
+                    localStorage.setItem('pageTitle', pageTitleInput.value);
+                }
+            });
+            
+            updateSubtitleBtn.addEventListener('click', function() {
+                if (pageSubtitleInput.value) {
+                    pageSubtitle.textContent = pageSubtitleInput.value;
+                    alert('网页副标题已更新!');
+                    
+                    // 保存到本地存储
+                    localStorage.setItem('pageSubtitle', pageSubtitleInput.value);
+                }
+            });
+            
+            updateEasterEggBtn.addEventListener('click', function() {
+                if (easterEggInput.value) {
+                    easterEgg.textContent = easterEggInput.value;
+                    alert('彩蛋文字已更新!');
+                    
+                    // 保存到本地存储
+                    localStorage.setItem('easterEggText', easterEggInput.value);
+                }
+            });
+            
+            // 检查初始状态
+            const savedStatus = localStorage.getItem('websiteStatus');
+            if (savedStatus === 'closed') {
+                isWebsiteOpen = false;
+                frontend.style.display = 'none';
+                backend.style.display = 'none';
+                closedState.style.display = 'flex';
+                websiteStatus.textContent = '当前状态: 关闭';
+                
+                closeBtn.classList.add('active');
+                openBtn.classList.remove('active');
+            }
+            
+            // 加载保存的图片和文本
+            const savedMainImageUrl = localStorage.getItem('mainImageUrl');
+            if (savedMainImageUrl) {
+                mainImageUrl = savedMainImageUrl;
+                mainImage.style.backgroundImage = `url('${mainImageUrl}')`;
+            }
+            
+            const savedPopupImageUrl = localStorage.getItem('popupImageUrl');
+            if (savedPopupImageUrl) {
+                popupImageUrl = savedPopupImageUrl;
+                popupImage.src = popupImageUrl;
+            }
+            
+            const savedPageTitle = localStorage.getItem('pageTitle');
+            if (savedPageTitle) {
+                pageTitle.textContent = savedPageTitle;
+            }
+            
+            const savedPageSubtitle = localStorage.getItem('pageSubtitle');
+            if (savedPageSubtitle) {
+                pageSubtitle.textContent = savedPageSubtitle;
+            }
+            
+            const savedEasterEggText = localStorage.getItem('easterEggText');
+            if (savedEasterEggText) {
+                easterEgg.textContent = savedEasterEggText;
+            }
         });
-
-        // 初始更新时间并设置定时器
-        updateBeijingTime();
-        setInterval(updateBeijingTime, 1000);
     </script>
 </body>
 </html>
