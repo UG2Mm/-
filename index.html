@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>极简模拟时钟</title>
+    <title>时钟与搜索</title>
     <style>
         * {
             margin: 0;
@@ -18,38 +18,62 @@
             font-family: 'Arial', sans-serif;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            padding: 20px;
+            padding-top: 30px;
         }
 
-        .clock-container {
+        .main-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 40px;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .clock-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .clock-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border: 2px solid #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
         }
 
         .analog-clock {
-            width: 250px;
-            height: 250px;
-            border: 12px solid #333;
+            width: 260px;
+            height: 260px;
+            border: 10px solid #333;
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
             background: #fff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
         .clock-center {
-            width: 16px;
-            height: 16px;
-            background: #333;
+            width: 14px;
+            height: 14px;
+            background: #e74c3c;
             border-radius: 50%;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
 
         .hour-hand, .minute-hand, .second-hand {
@@ -57,7 +81,7 @@
             bottom: 50%;
             left: 50%;
             transform-origin: 50% 100%;
-            border-radius: 4px;
+            border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         }
 
@@ -87,65 +111,151 @@
 
         .digital-clock {
             text-align: center;
+            width: 100%;
         }
 
-        .time {
-            font-size: 3.5rem;
+        .time-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hours, .minutes {
+            font-size: 4rem;
             font-weight: 300;
-            letter-spacing: 5px;
             color: #555;
+        }
+
+        .colon {
+            font-size: 4rem;
+            font-weight: 300;
+            color: #e74c3c;
         }
 
         .date {
             font-size: 1.5rem;
             margin-top: 15px;
-            letter-spacing: 2px;
             color: #888;
+            letter-spacing: 2px;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #888;
+            font-style: italic;
+        }
+
+        .search-input:focus {
+            border-color: #4d90fe;
+            box-shadow: 0 2px 10px rgba(77, 144, 254, 0.3);
+        }
+
+        .search-button {
+            padding: 12px 25px;
+            background-color: #4d90fe;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #357ae8;
         }
 
         @media (max-width: 600px) {
+            .clock-wrapper {
+                width: 250px;
+                height: 250px;
+            }
+            
             .analog-clock {
-                width: 200px;
-                height: 200px;
-                border-width: 10px;
+                width: 230px;
+                height: 230px;
             }
             
             .hour-hand {
                 height: 60px;
-                width: 7px;
             }
             
             .minute-hand {
-                height: 85px;
-                width: 4px;
+                height: 90px;
             }
             
             .second-hand {
-                height: 95px;
+                height: 100px;
             }
             
-            .time {
+            .hours, .minutes, .colon {
                 font-size: 3rem;
             }
             
             .date {
                 font-size: 1.2rem;
             }
+            
+            .search-input, .search-button {
+                padding: 10px 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="clock-container">
-        <div class="analog-clock">
-            <div class="hour-hand" id="hour-hand"></div>
-            <div class="minute-hand" id="minute-hand"></div>
-            <div class="second-hand" id="second-hand"></div>
-            <div class="clock-center"></div>
+    <div class="main-container">
+        <div class="clock-section">
+            <div class="clock-wrapper">
+                <div class="analog-clock">
+                    <div class="hour-hand" id="hour-hand"></div>
+                    <div class="minute-hand" id="minute-hand"></div>
+                    <div class="second-hand" id="second-hand"></div>
+                    <div class="clock-center"></div>
+                </div>
+            </div>
+            
+            <div class="digital-clock">
+                <div class="time-container">
+                    <div class="hours" id="hours">00</div>
+                    <div class="colon">:</div>
+                    <div class="minutes" id="minutes">00</div>
+                </div>
+                <div class="date" id="date">2023年01月01日 星期一</div>
+            </div>
         </div>
         
-        <div class="digital-clock">
-            <div class="time" id="time">00:00:00</div>
-            <div class="date" id="date">2023年01月01日 星期一</div>
+        <div class="search-container">
+            <form action="https://www.bing.com/search" method="GET" class="search-box">
+                <input type="text" name="q" placeholder="为什么不问问神奇的海螺" class="search-input" required>
+                <button type="submit" class="search-button">搜索</button>
+            </form>
         </div>
     </div>
 
@@ -156,7 +266,6 @@
             // 数字时钟部分
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
             
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -165,7 +274,8 @@
             const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
             const weekday = weekdays[now.getDay()];
             
-            document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
             document.getElementById('date').textContent = `${year}年${month}月${day}日 星期${weekday}`;
             
             // 模拟时钟指针位置
