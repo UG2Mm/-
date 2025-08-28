@@ -2,194 +2,281 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一个网页</title>
     <style>
-        /* 全局重置与基础设置 */
+        :root {
+            --primary: #2d3748;
+            --primary-light: #4a5568;
+            --background: #ffffff;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
-            background: linear-gradient(135deg, #3a4e56, #6e7a7e);
-            color: #fff;
-        }
-
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 20px;
-            text-align: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
             min-height: 100vh;
-        }
-
-        /* 按钮区域容器 */
-        .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
-            padding: 25px;
-            width: 100%;
-            max-width: 1000px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        /* 每个按钮的包装容器 */
-        .button-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%; /* 默认手机端一列 */
-            max-width: 220px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
         }
 
-        .button-container:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* 按钮样式 */
-        .button {
-            background: #2d5ed0;
-            color: white;
-            font-size: 1.1em;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+        .header {
             text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
             width: 100%;
-            transition: background 0.3s ease;
-            font-weight: 500;
+            max-width: 1200px;
         }
 
-        .button:hover {
-            background: #3a9df3;
+        .button-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
         }
 
-        /* 按钮描述文字 */
-        .button-description {
-            font-size: 0.85em;
-            color: #ccc;
-            margin-top: 8px;
+        .button-main {
+            padding: 1.25rem;
+            background: var(--primary);
+            color: white;
             text-align: center;
-            line-height: 1.4;
-            word-break: break-word;
+            font-weight: 500;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            width: 100%;
         }
 
-        /* ===== 响应式设计 - Media Queries ===== */
+        .button-desc {
+            padding: 1.25rem;
+            font-size: 0.9375rem;
+            color: var(--text-light);
+            background: var(--card-bg);
+            flex-grow: 1;
+            line-height: 1.625;
+        }
 
-        /* 平板设备（例如 iPad，768px ~ 1024px） */
-        @media (min-width: 768px) {
-            .button-container {
-                width: calc(50% - 10px); /* 每行 2 个按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem;
+            }
+            
+            .title {
+                font-size: 1.75rem;
+            }
+
+            .buttons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 1.5rem;
+                right: 1.5rem;
             }
         }
 
-        /* 桌面设备（例如 PC，大于 1024px） */
-        @media (min-width: 1024px) {
-            .button-container {
-                width: calc(33.333% - 14px); /* 每行 3 个按钮 */
-            }
-        }
-
-        /* 小屏手机（480px 以下） */
         @media (max-width: 480px) {
             body {
-                padding: 15px;
+                padding: 1rem;
             }
-
-            .buttons {
-                margin-top: 30px;
-                padding: 20px;
-                gap: 15px;
+            
+            .title {
+                font-size: 1.5rem;
             }
-
-            .button-container {
-                padding: 15px 12px;
+            
+            .subtitle {
+                font-size: 1rem;
             }
-
-            .button {
-                font-size: 1em;
-                padding: 10px 16px;
+            
+            .button-main {
+                padding: 1rem;
+                font-size: 1rem;
             }
-
-            .button-description {
-                font-size: 0.8em;
-            }
-        }
-
-        /* 超小屏 / 特殊情况 */
-        @media (max-width: 360px) {
-            .button-container {
-                width: 100%; /* 强制单列 */
+            
+            .button-desc {
+                padding: 1rem;
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="header">
+        <h1 class="title">我只是一个搬运工</h1>
+        <p class="subtitle">打不开某些网页？为什么不问问神奇的海螺呢？</p>
+    </div>
+    
+    <div class="buttons-grid" id="buttonContainer"></div>
 
-    <!-- 按钮区域 -->
-    <div class="buttons" id="buttonContainer"></div>
+    <div class="back-to-top" id="backToTop">↑</div>
 
     <script>
         function generateButtons() {
             const container = document.getElementById("buttonContainer");
             const buttonsData = [
-                { text: "Github", url: "https://github.com/", description: "开源才是未来！" },
-                { text: "百度", url: "http://www.baidu.com", description: "百度一下 你就知道" },
-                { text: "Ping0", url: "https://ip.ping0.cc/", description: "全球IP 查询 风险检测" },
-                { text: "盘搜", url: "https://so.252035.xyz/", description: "网盘公开资源搜索（无蓝奏云）" },
-                { text: "IPcheck", url: "https://ipcheck.ing/#/", description: "本地IP地址 网络通畅 VPN检测" },
-                { text: "Operit AI", url: "https://github.com/AAswordman/Operit", description: "移动端首个功能完备的AI智能助手应用，完全独立运行，拥有强大的工具调用能力（需有API密匙）" },
-                { text: "OpenArk", url: "https://github.com/BlackINT3/OpenArk/blob/master/doc/README-zh.md", description: "一款Win上的Ark工具，你也可以拿来作为WIN快捷工具使用" },
-                { text: "MT管理器", url: "http://mt2.cn/", description: "安卓端最强文件管理与逆向修改（免费版功能已够大部分人使用）" },
-                { text: "阅读3.0", url: "https://github.com/gedoor/legado", description: "安卓端最强阅读软件没有之一！" },
-                { text: "FlClash", url: "https://github.com/chen08209/FlClash/blob/main/README_zh_CN.md", description: "基于ClashMeta核心的多平台代理（除Apple系）" },
-                { text: "Clash Meta for Android", url: "https://github.com/MetaCubeX/ClashMetaForAndroid", description: "Clash.Meta 的安卓版" },
-                { text: "Karing", url: "https://github.com/KaringX/karing", description: "一个基于Flutter的singbox软件" },
-                { text: "纯粹直播", url: "https://github.com/liuchuancong/pure_live?tab=readme-ov-file", description: "第三方直播播放器（支持 哔哩哔哩/虎牙/斗鱼/快手/抖音/网易cc/M38自定义源）" }
+                { 
+                    text: "GitHub", 
+                    url: "https://github.com/", 
+                    description: "全球最大的开源代码托管平台，支持版本控制和协作开发。" 
+                },
+                { 
+                    text: "Ping0", 
+                    url: "https://ip.ping0.cc/", 
+                    description: "全面的IP地址检测工具，提供网络诊断和风险分析功能。" 
+                },
+                { 
+                    text: "盘搜", 
+                    url: "https://so.252035.xyz/", 
+                    description: "高效的网盘资源搜索引擎，帮助您快速找到公开分享的文件资源。" 
+                },
+                { 
+                    text: "IP检测", 
+                    url: "https://ipcheck.ing/#/", 
+                    description: "实时检测本地网络信息，包括IP地址、网络连通性和VPN状态。" 
+                },
+                { 
+                    text: "Operit AI", 
+                    url: "https://github.com/AAswordman/Operit", 
+                    description: "功能强大的移动端AI助手，支持多种工具调用，需要API密钥才能使用。" 
+                },
+                { 
+                    text: "OpenArk", 
+                    url: "https://github.com/BlackINT3/OpenArk/blob/master/doc/README-zh.md", 
+                    description: "Windows系统工具集，提供Ark工具功能和快捷操作方式。" 
+                },
+                { 
+                    text: "MT管理器", 
+                    url: "http://mt2.cn/", 
+                    description: "安卓平台强大的文件管理工具，支持文件操作和逆向工程。" 
+                },
+                { 
+                    text: "阅读3.0", 
+                    url: "https://github.com/gedoor/legado", 
+                    description: "安卓端优秀的电子书阅读应用，支持多种格式和自定义书源。" 
+                },
+                { 
+                    text: "FlClash", 
+                    url: "https://github.com/chen08209/FlClash/blob/main/README_zh_CN.md", 
+                    description: "基于ClashMeta核心的跨平台代理工具，支持多平台使用。" 
+                },
+                { 
+                    text: "Clash Meta", 
+                    url: "https://github.com/MetaCubeX/ClashMetaForAndroid", 
+                    description: "Clash.Meta协议的安卓客户端，提供稳定的代理服务。" 
+                },
+                { 
+                    text: "Karing", 
+                    url: "https://github.com/KaringX/karing", 
+                    description: "基于Flutter开发的singbox客户端，界面简洁功能实用。" 
+                },
+                { 
+                    text: "纯粹直播", 
+                    url: "https://github.com/liuchuancong/pure_live?tab=readme-ov-file", 
+                    description: "多平台直播聚合应用，支持主流直播平台的内容播放。" 
+                }
             ];
 
             buttonsData.forEach((button) => {
-                const wrapper = document.createElement("div");
-                wrapper.className = "button-container";
+                const card = document.createElement("div");
+                card.className = "button-card";
 
                 const btn = document.createElement("button");
-                btn.className = "button";
+                btn.className = "button-main";
                 btn.textContent = button.text;
                 btn.onclick = () => window.open(button.url, '_blank');
 
                 const desc = document.createElement("div");
-                desc.className = "button-description";
+                desc.className = "button-desc";
                 desc.textContent = button.description;
 
-                wrapper.appendChild(btn);
-                wrapper.appendChild(desc);
-                container.appendChild(wrapper);
+                card.appendChild(btn);
+                card.appendChild(desc);
+                container.appendChild(card);
             });
         }
 
-        // 页面加载完成后初始化
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
         generateButtons();
     </script>
-
 </body>
 </html>
