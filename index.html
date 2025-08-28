@@ -3,140 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>一个网页</title>
+    <title>现代化简约网页</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6e7a7e, #3a4e56);
-            color: #fff;
+        /* 全局重置与基础设置 */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #3a4e56, #6e7a7e);
+            color: #fff;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            height: 100vh;
+            padding: 20px;
             text-align: center;
-            overflow: auto;
+            min-height: 100vh;
         }
 
-        .time {
-            font-size: 6em;
-            font-weight: bold;
-            margin-top: 50px;
-            letter-spacing: 2px;
-        }
-
-        .date, .holiday {
-            font-size: 1.3em;
-            margin-top: 10px;
-        }
-
-        .footer-text {
-            font-size: 1.2em;
-            margin-top: 20px;
-            color: #bbb;
-        }
-
+        /* 按钮区域容器 */
         .buttons {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 50px;
-            padding: 20px;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            padding: 25px;
             width: 100%;
-            max-width: 1200px;
-            overflow-y: auto;
-            max-height: 450px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
+        /* 每个按钮的包装容器 */
         .button-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 250px;
-            max-width: 300px;
+            width: 100%; /* 默认手机端一列 */
+            max-width: 220px;
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            flex: 1 1 45%;
+            padding: 20px 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
+        .button-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 按钮样式 */
         .button {
-            background: linear-gradient(135deg, #1f8cf4, #2d5ed0);
+            background: #2d5ed0;
             color: white;
             font-size: 1.1em;
-            padding: 15px 25px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 10px;
+            border-radius: 6px;
             cursor: pointer;
             text-align: center;
             width: 100%;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+            font-weight: 500;
         }
 
         .button:hover {
-            background: linear-gradient(135deg, #3a9df3, #2e5b97);
-            transform: translateY(-4px);
+            background: #3a9df3;
         }
 
-        .button:active {
-            transform: translateY(2px);
-        }
-
+        /* 按钮描述文字 */
         .button-description {
-            font-size: 0.9em;
-            color: #ddd;
+            font-size: 0.85em;
+            color: #ccc;
             margin-top: 8px;
             text-align: center;
+            line-height: 1.4;
+            word-break: break-word;
         }
 
-        @media (max-width: 768px) {
-            .button { font-size: 1em; padding: 12px 22px; }
-            .time { font-size: 5em; }
-            .button-container { min-width: 200px; }
+        /* ===== 响应式设计 - Media Queries ===== */
+
+        /* 平板设备（例如 iPad，768px ~ 1024px） */
+        @media (min-width: 768px) {
+            .button-container {
+                width: calc(50% - 10px); /* 每行 2 个按钮 */
+            }
         }
 
+        /* 桌面设备（例如 PC，大于 1024px） */
+        @media (min-width: 1024px) {
+            .button-container {
+                width: calc(33.333% - 14px); /* 每行 3 个按钮 */
+            }
+        }
+
+        /* 小屏手机（480px 以下） */
         @media (max-width: 480px) {
-            .button { font-size: 0.9em; padding: 10px 18px; }
-            .time { font-size: 4em; }
-            .button-container { min-width: 150px; }
+            body {
+                padding: 15px;
+            }
+
+            .buttons {
+                margin-top: 30px;
+                padding: 20px;
+                gap: 15px;
+            }
+
+            .button-container {
+                padding: 15px 12px;
+            }
+
+            .button {
+                font-size: 1em;
+                padding: 10px 16px;
+            }
+
+            .button-description {
+                font-size: 0.8em;
+            }
+        }
+
+        /* 超小屏 / 特殊情况 */
+        @media (max-width: 360px) {
+            .button-container {
+                width: 100%; /* 强制单列 */
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="time" id="time"></div>
-    <div class="date" id="date"></div>
-    <div class="holiday" id="holiday"></div>
-    <div class="footer-text">打不开网页？为什么不问问神奇的海螺呢？</div>
-
+    <!-- 按钮区域 -->
     <div class="buttons" id="buttonContainer"></div>
 
     <script>
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false });
-            document.getElementById("time").textContent = timeString;
-            const dateString = now.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' });
-            document.getElementById("date").textContent = dateString;
-            document.getElementById("holiday").textContent = getHoliday(now);
-        }
-
-        function getHoliday(date) {
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            if (month === 10 && day === 1) return "节假日：国庆节";
-            if (month === 2 && day === 1) return "节假日：春节";
-            return "今天没有节假日";
-        }
-
         function generateButtons() {
             const container = document.getElementById("buttonContainer");
             const buttonsData = [
@@ -146,31 +159,35 @@
                 { text: "盘搜", url: "https://so.252035.xyz/", description: "网盘公开资源搜索（无蓝奏云）" },
                 { text: "IPcheck", url: "https://ipcheck.ing/#/", description: "本地IP地址 网络通畅 VPN检测" },
                 { text: "Operit AI", url: "https://github.com/AAswordman/Operit", description: "移动端首个功能完备的AI智能助手应用，完全独立运行，拥有强大的工具调用能力（需有API密匙）" },
-                { text: "OpenArk", url: "https://github.com/BlackINT3/OpenArk/blob/master/doc/README-zh.md", description: "一款Win上的Ark工具. （你也可以拿来作为WIN快捷工具使用）" }
+                { text: "OpenArk", url: "https://github.com/BlackINT3/OpenArk/blob/master/doc/README-zh.md", description: "一款Win上的Ark工具，你也可以拿来作为WIN快捷工具使用" },
+                { text: "MT管理器", url: "http://mt2.cn/", description: "安卓端最强文件管理与逆向修改（免费版功能已够大部分人使用）" },
+                { text: "阅读3.0", url: "https://github.com/gedoor/legado", description: "安卓端最强阅读软件没有之一！" },
+                { text: "FlClash", url: "https://github.com/chen08209/FlClash/blob/main/README_zh_CN.md", description: "基于ClashMeta核心的多平台代理（除Apple系）" },
+                { text: "Clash Meta for Android", url: "https://github.com/MetaCubeX/ClashMetaForAndroid", description: "Clash.Meta 的安卓版" },
+                { text: "Karing", url: "https://github.com/KaringX/karing", description: "一个基于Flutter的singbox软件" }
             ];
 
-            buttonsData.forEach((button, index) => {
+            buttonsData.forEach((button) => {
                 const wrapper = document.createElement("div");
                 wrapper.className = "button-container";
 
                 const btn = document.createElement("button");
                 btn.className = "button";
                 btn.textContent = button.text;
-                btn.onclick = function() { window.open(button.url, '_blank'); };
+                btn.onclick = () => window.open(button.url, '_blank');
 
-                const description = document.createElement("div");
-                description.className = "button-description";
-                description.textContent = button.description;
+                const desc = document.createElement("div");
+                desc.className = "button-description";
+                desc.textContent = button.description;
 
                 wrapper.appendChild(btn);
-                wrapper.appendChild(description);
+                wrapper.appendChild(desc);
                 container.appendChild(wrapper);
             });
         }
 
+        // 页面加载完成后初始化
         generateButtons();
-        setInterval(updateTime, 1000);
-        updateTime();
     </script>
 
 </body>
